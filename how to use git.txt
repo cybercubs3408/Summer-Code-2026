@@ -2,6 +2,9 @@ If you want to view file changes since the last commit, do
 
 git status
 
+for history:
+git log
+
 Once you have made all the changes you want, do the following:
 Add all of the changes to the next commit
 

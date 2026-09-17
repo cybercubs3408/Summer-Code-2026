@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.operatorConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -36,6 +37,11 @@ import frc.robot.commands.Shoot;
 //import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
+    
+
+
+
+
     private final SendableChooser<Command> autoSelector;
 
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -79,6 +85,10 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        //named commands for pathplanner:
+        NamedCommands.registerCommand("Shoot3Sec", new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem));
+        NamedCommands.registerCommand("RunHopper3Sec", new RunIntakeHopper(m_HopperSubsystem, m_IntakeSubsystem));
+
         //DRIVETRAIN KEYBINDS
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention

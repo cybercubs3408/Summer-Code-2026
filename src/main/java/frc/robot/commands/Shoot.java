@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.Timer;
 
 
 import frc.robot.Constants.operatorConstants;
@@ -27,6 +28,8 @@ public class Shoot extends Command {
   ShooterSubsystem m_shooter;
   TurretSubsystem m_turret;
   KickerSubsystem m_kicker;
+  private final Timer m_timer = new Timer();
+
 
   CommandSwerveDrivetrain m_drivetrain;
   private double ShootAngle;
@@ -49,12 +52,15 @@ public class Shoot extends Command {
 
     m_kicker = kicker;
     addRequirements(kicker);
+    
 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_timer.reset();
+    m_timer.start();
 
     var alianceColor = DriverStation.getAlliance();
     //calculate shooting speed and turret position
@@ -167,7 +173,17 @@ public class Shoot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (DriverStation.isAutonomous()){
+      if (m_timer.get()>=3) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else{
+      return false;
+    }
   }
 }
 
