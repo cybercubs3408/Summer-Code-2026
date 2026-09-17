@@ -1,0 +1,17 @@
+If you want to view file changes since the last commit, do
+
+git status
+
+Once you have made all the changes you want, do the following:
+Add all of the changes to the next commit
+
+git add .
+
+Then, create a commit and add a message to it 
+
+git commit -m "ADD YOUR MESSAGE HERE"
+
+Finally, push the commit to the repository
+
+git push -u origin main
+
