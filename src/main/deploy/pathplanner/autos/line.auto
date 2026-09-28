@@ -21,12 +21,6 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "RunHopper3Sec"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
                         "name": "Shoot3Sec"
                       }
                     }

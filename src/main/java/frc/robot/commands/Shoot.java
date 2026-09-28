@@ -8,6 +8,7 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KickerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,6 +29,7 @@ public class Shoot extends Command {
   ShooterSubsystem m_shooter;
   TurretSubsystem m_turret;
   KickerSubsystem m_kicker;
+  HopperSubsystem m_hopper;
   private final Timer m_timer = new Timer();
 
 
@@ -41,7 +43,7 @@ public class Shoot extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Shoot (ShooterSubsystem shooter, TurretSubsystem turret, CommandSwerveDrivetrain drivetrain, KickerSubsystem kicker) {
+  public Shoot (ShooterSubsystem shooter, TurretSubsystem turret, CommandSwerveDrivetrain drivetrain, KickerSubsystem kicker, HopperSubsystem hopper) {
     m_shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
@@ -52,6 +54,9 @@ public class Shoot extends Command {
 
     m_kicker = kicker;
     addRequirements(kicker);
+
+    m_hopper = hopper;
+    addRequirements(hopper);
     
 
   }
@@ -105,7 +110,8 @@ public class Shoot extends Command {
     
 
     m_shooter.setShooterSpeed(ShootRPS); //uses rps
-    m_kicker.setKickerSpeed(-ShootRPS);
+    m_kicker.setKickerSpeed(-0.9);
+    m_hopper.setHopperSpeed(-0.8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -168,6 +174,7 @@ public class Shoot extends Command {
   public void end(boolean interrupted) {
     m_shooter.stopShooter();
     m_kicker.stopKicker();
+    m_hopper.stopHopper();
   }
 
   // Returns true when the command should end.

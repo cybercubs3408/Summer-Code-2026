@@ -29,12 +29,12 @@ public class Constants {
         //Hopper variables
         public static final int kHopperMotorId=19;
         //hopper motor is inverted. negative speed=ball goes in
-        public static final double kHopperSpeed=-0.5;
+        public static final double kHopperSpeed=-0.8;
 
         //intake variables
         public static final int kIntakeMotorId=17;
         //intake motor is inverted. Negative speed=ball goes in
-        public static final double kIntakeSpeed=-0.5;
+        public static final double kIntakeSpeed=-0.8;
 
         //intake mover varialbes
          public static final int kIntakeMoverMotorId=18;

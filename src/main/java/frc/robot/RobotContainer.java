@@ -30,7 +30,9 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeMoverSubsystem;
 import frc.robot.subsystems.KickerSubsystem;
+import frc.robot.commands.OutTakeKickerHopper;
 import frc.robot.commands.RunIntakeHopper;
+import frc.robot.commands.RunIntakeHopperOut;
 import frc.robot.commands.Shoot;
 
 
@@ -86,7 +88,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         //named commands for pathplanner:
-        NamedCommands.registerCommand("Shoot3Sec", new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem));
+        NamedCommands.registerCommand("Shoot3Sec", new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem));
         NamedCommands.registerCommand("RunHopper3Sec", new RunIntakeHopper(m_HopperSubsystem, m_IntakeSubsystem));
 
         //DRIVETRAIN KEYBINDS
@@ -128,14 +130,18 @@ public class RobotContainer {
 
         //COMMAND KEYBINDS
         //CONTROLLER 0
-        driverController0.y().whileTrue(new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem));
-        driverController0.x().whileTrue(new RunIntakeHopper(m_HopperSubsystem, m_IntakeSubsystem));
-
-        driverController0.rightBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(0.3));
-        driverController0.leftBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(-0.3));
 
         //CONTROLLER 1
         //driverController1.x().whileTrue();
+         driverController1.leftTrigger().whileTrue(m_IntakeSubsystem.runIntake());
+         driverController1.x().whileTrue(new RunIntakeHopperOut(m_HopperSubsystem, m_IntakeSubsystem));
+        driverController1.y().whileTrue(new OutTakeKickerHopper(m_HopperSubsystem, m_KickerSubsystem));
+
+        driverController1.rightBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(0.3));
+        driverController1.leftBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(-0.3));
+        driverController1.rightTrigger().whileTrue(new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem));
+        //driverController1.povLeft().onTrue(m_TurretSubsystem.offsetLeft());
+        //driverController1.povRight().onTrue(m_TurretSubsystem.offsetRight());
 
         
     }
