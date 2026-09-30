@@ -34,16 +34,13 @@ import frc.robot.commands.OutTakeKickerHopper;
 import frc.robot.commands.RunIntakeHopper;
 import frc.robot.commands.RunIntakeHopperOut;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.RunIntake;
 
 
 //import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
     
-
-
-
-
     private final SendableChooser<Command> autoSelector;
 
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -90,6 +87,7 @@ public class RobotContainer {
         //named commands for pathplanner:
         NamedCommands.registerCommand("Shoot3Sec", new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem));
         NamedCommands.registerCommand("RunHopper3Sec", new RunIntakeHopper(m_HopperSubsystem, m_IntakeSubsystem));
+        NamedCommands.registerCommand("RunIntake4Sec", m_IntakeSubsystem.runIntake().withTimeout(4));
 
         //DRIVETRAIN KEYBINDS
         // Note that X is defined as forward according to WPILib convention,
@@ -130,11 +128,18 @@ public class RobotContainer {
 
         //COMMAND KEYBINDS
         //CONTROLLER 0
+        driverController0.leftTrigger().whileTrue(m_IntakeSubsystem.runIntake());
+        driverController0.x().whileTrue(new RunIntakeHopperOut(m_HopperSubsystem, m_IntakeSubsystem));
+        driverController0.y().whileTrue(new OutTakeKickerHopper(m_HopperSubsystem, m_KickerSubsystem));
+
+        driverController0.rightBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(0.3));
+        driverController0.leftBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(-0.3));
+        driverController0.rightTrigger().whileTrue(new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem));
 
         //CONTROLLER 1
         //driverController1.x().whileTrue();
-         driverController1.leftTrigger().whileTrue(m_IntakeSubsystem.runIntake());
-         driverController1.x().whileTrue(new RunIntakeHopperOut(m_HopperSubsystem, m_IntakeSubsystem));
+        driverController1.leftTrigger().whileTrue(m_IntakeSubsystem.runIntake());
+        driverController1.x().whileTrue(new RunIntakeHopperOut(m_HopperSubsystem, m_IntakeSubsystem));
         driverController1.y().whileTrue(new OutTakeKickerHopper(m_HopperSubsystem, m_KickerSubsystem));
 
         driverController1.rightBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(0.3));
