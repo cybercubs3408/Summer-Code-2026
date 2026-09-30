@@ -24,6 +24,8 @@ public class IntakeMoverSubsystem extends SubsystemBase
 {
   
     private final SparkMax m_IntakeMoverMotor;
+    private SparkMaxConfig m_config;
+    
   /** Creates a new ExampleSubsystem. */
 
   // setup hopper subsystem
@@ -32,9 +34,20 @@ public class IntakeMoverSubsystem extends SubsystemBase
    
     m_IntakeMoverMotor = new SparkMax(operatorConstants.kIntakeMoverMotorId, MotorType.kBrushless);
    //brushed or brushless?
+    m_config = new SparkMaxConfig();
+    m_config.idleMode(IdleMode.kBrake);
+    /*m_config.softLimit
+            .forwardSoftLimit(42.0)            // Max position threshold
+            .forwardSoftLimitEnabled(true)     // Turn the forward limit on
+            .reverseSoftLimit(0.0)             // Min position threshold
+            .reverseSoftLimitEnabled(true);*/ 
+    m_IntakeMoverMotor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+
+
     
 
-  }
+  
   public void setSpeed(double speed)
   {
     m_IntakeMoverMotor.set(speed);
