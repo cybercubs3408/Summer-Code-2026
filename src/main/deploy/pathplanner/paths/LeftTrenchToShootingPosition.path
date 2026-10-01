@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 3.52151212553495,
-        "y": 0.48333808844507875
+        "y": 7.586661911554922
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2368616262482166,
-        "y": 0.5092154065620548
+        "x": 2.9263338088445074,
+        "y": 7.5996005706134095
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RightTrenchStarting"
     },
     {
       "anchor": {
-        "x": 1.6712838801711838,
-        "y": 2.100670470756063
+        "x": 1.7747931526390865,
+        "y": 5.438844507845934
       },
       "prevControl": {
-        "x": 1.02435092724679,
-        "y": 2.0747931526390873
+        "x": 1.3478174037089867,
+        "y": 5.451783166904422
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "RightShootPosition"
+      "linkedName": "LeftShootingPosition"
     }
   ],
   "rotationTargets": [],

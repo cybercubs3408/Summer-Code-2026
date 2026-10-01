@@ -35,6 +35,7 @@ import frc.robot.commands.RunIntakeHopper;
 import frc.robot.commands.RunIntakeHopperOut;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.DeployIntake;
 
 
 //import frc.robot.subsystems.ShooterSubsystem;
@@ -88,6 +89,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot3Sec", new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem));
         NamedCommands.registerCommand("RunHopper3Sec", new RunIntakeHopper(m_HopperSubsystem, m_IntakeSubsystem));
         NamedCommands.registerCommand("RunIntake4Sec", m_IntakeSubsystem.runIntake().withTimeout(4));
+        NamedCommands.registerCommand("deployIntake", new DeployIntake(m_IntakeMoverSubsystem));
 
         //DRIVETRAIN KEYBINDS
         // Note that X is defined as forward according to WPILib convention,
@@ -135,6 +137,9 @@ public class RobotContainer {
         driverController0.rightBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(0.3));
         driverController0.leftBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(-0.3));
         driverController0.rightTrigger().whileTrue(new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem));
+        driverController0.povLeft().onTrue(m_TurretSubsystem.offsetLeft());
+        driverController0.povRight().onTrue(m_TurretSubsystem.offsetRight());
+        
 
         //CONTROLLER 1
         //driverController1.x().whileTrue();
@@ -145,8 +150,8 @@ public class RobotContainer {
         driverController1.rightBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(0.3));
         driverController1.leftBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(-0.3));
         driverController1.rightTrigger().whileTrue(new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem));
-        //driverController1.povLeft().onTrue(m_TurretSubsystem.offsetLeft());
-        //driverController1.povRight().onTrue(m_TurretSubsystem.offsetRight());
+        driverController1.povLeft().onTrue(m_TurretSubsystem.offsetLeft());
+        driverController1.povRight().onTrue(m_TurretSubsystem.offsetRight());
 
         
     }

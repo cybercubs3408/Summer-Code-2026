@@ -19,6 +19,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeMoverSubsystem extends SubsystemBase 
 {
@@ -51,6 +52,7 @@ public class IntakeMoverSubsystem extends SubsystemBase
   public void setSpeed(double speed)
   {
     m_IntakeMoverMotor.set(speed);
+    SmartDashboard.putNumber("adjustedShootAngle", m_IntakeMoverMotor.getEncoder().getPosition());
   }
 
   public void stopIntakeMover()

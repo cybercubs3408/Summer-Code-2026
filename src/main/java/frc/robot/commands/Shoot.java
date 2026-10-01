@@ -164,7 +164,7 @@ public class Shoot extends Command {
     }
     
     //turret gear ratio 1:10. 36 degrees per rotation
-    m_turret.goToLocation(-adjustedShootAngle/Math.toRadians(36));
+    m_turret.goToLocation((-adjustedShootAngle+m_turret.returnOffset())/Math.toRadians(36));
     SmartDashboard.putNumber("adjustedShootAngle", Math.toDegrees(adjustedShootAngle));
 
   }

@@ -18,6 +18,7 @@ import frc.robot.Constants.operatorConstants;
 public class TurretSubsystem extends SubsystemBase 
 {
   public TalonFX m_turret;
+  private double offset;
   
   /** Creates a new ExampleSubsystem. */
 
@@ -45,12 +46,47 @@ public class TurretSubsystem extends SubsystemBase
 
     m_turret.getConfigurator().apply(talonFXConfigs);
     m_turret.setPosition(0); //resets zero position of turret at startup
+
+    double offset = 0.0;
     
 
   }
   public void setTurretSpeed(double speed)
   {
     m_turret.set(speed);
+  }
+  public Command offsetLeft()
+  {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return this.startEnd(
+      ()->{
+        offset+=5;
+      },
+      () -> {
+        
+      }
+
+    );
+  }
+
+  public Command offsetRight()
+  {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return this.startEnd(
+      ()->{
+        offset-=5;
+      },
+      () -> {
+        
+      }
+
+    );
+  }
+
+  public double returnOffset(){
+    return offset;
   }
 
   public void stopTurret()
