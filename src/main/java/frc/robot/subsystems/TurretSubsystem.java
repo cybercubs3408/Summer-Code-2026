@@ -61,7 +61,7 @@ public class TurretSubsystem extends SubsystemBase
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return this.startEnd(
       ()->{
-        offset+=5;
+        offset-=0.4;
       },
       () -> {
         
@@ -76,7 +76,7 @@ public class TurretSubsystem extends SubsystemBase
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return this.startEnd(
       ()->{
-        offset-=5;
+        offset+=0.4;
       },
       () -> {
         

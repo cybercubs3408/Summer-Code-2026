@@ -37,11 +37,11 @@ public class IntakeMoverSubsystem extends SubsystemBase
    //brushed or brushless?
     m_config = new SparkMaxConfig();
     m_config.idleMode(IdleMode.kBrake);
-    /*m_config.softLimit
-            .forwardSoftLimit(42.0)            // Max position threshold
+    m_config.softLimit
+            .forwardSoftLimit(17.0)            // Max position threshold
             .forwardSoftLimitEnabled(true)     // Turn the forward limit on
             .reverseSoftLimit(0.0)             // Min position threshold
-            .reverseSoftLimitEnabled(true);*/ 
+            .reverseSoftLimitEnabled(true);
     m_IntakeMoverMotor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
@@ -52,7 +52,7 @@ public class IntakeMoverSubsystem extends SubsystemBase
   public void setSpeed(double speed)
   {
     m_IntakeMoverMotor.set(speed);
-    SmartDashboard.putNumber("adjustedShootAngle", m_IntakeMoverMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("intakemovermotor", m_IntakeMoverMotor.getEncoder().getPosition());
   }
 
   public void stopIntakeMover()

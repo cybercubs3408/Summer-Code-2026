@@ -17,9 +17,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "RightShootingPositionToOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightShootingPositionToOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
+                }
+              }
+            ]
           }
         },
         {
