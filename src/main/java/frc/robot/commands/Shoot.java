@@ -36,6 +36,7 @@ public class Shoot extends Command {
   CommandSwerveDrivetrain m_drivetrain;
   private double ShootAngle;
   private double ShootRPS;
+  private double time;
   //private final RunIntakeHopper m_subsystem;
 
   /**
@@ -43,8 +44,9 @@ public class Shoot extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Shoot (ShooterSubsystem shooter, TurretSubsystem turret, CommandSwerveDrivetrain drivetrain, KickerSubsystem kicker, HopperSubsystem hopper) {
+  public Shoot (ShooterSubsystem shooter, TurretSubsystem turret, CommandSwerveDrivetrain drivetrain, KickerSubsystem kicker, HopperSubsystem hopper, double time) {
     m_shooter = shooter;
+    this.time = time;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
 
@@ -181,7 +183,7 @@ public class Shoot extends Command {
   @Override
   public boolean isFinished() {
     if (DriverStation.isAutonomous()){
-      if (m_timer.get()>=3) {
+      if (m_timer.get()>=time) {
         return true;
       }
       else {
