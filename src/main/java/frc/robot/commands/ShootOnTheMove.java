@@ -131,12 +131,13 @@ public class ShootOnTheMove extends Command {
     angle = MathUtil.angleModulus(angle);
     boolean inRange = Math.abs(angle) <= Math.toRadians(60);
     angle = MathUtil.clamp(angle, -Math.toRadians(60), Math.toRadians(60));
-    m_turret.goToLocation((-angle + m_turret.returnOffset()) / Math.toRadians(36));
+    
     double rps = rpsFor(d);
     if (!Double.isFinite(d) || !Double.isFinite(angle) || !Double.isFinite(rps)) {
       m_kicker.stopKicker(); m_hopper.stopHopper(); return;
       }
-
+      
+    m_turret.goToLocation((-angle + m_turret.returnOffset()) / Math.toRadians(36));
     m_shooter.setShooterSpeed(rpsFor(d));
     m_kicker.setKickerSpeed(operatorConstants.kKickerSpeed);
     m_hopper.setHopperSpeed(operatorConstants.kHopperSpeed);
