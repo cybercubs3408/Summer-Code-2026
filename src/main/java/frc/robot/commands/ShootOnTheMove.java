@@ -12,6 +12,7 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KickerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -72,8 +73,6 @@ public class ShootOnTheMove extends Command {
     m_timer.reset();
     m_timer.start();
 
-    double hubX=0;
-    double hubY=0;
     if (DriverStation.Alliance.Red == DriverStation.getAlliance().get()){
         hubX = 11.901424;
         hubY = 4.021328;
@@ -84,6 +83,23 @@ public class ShootOnTheMove extends Command {
     }
  
   }
+  private double launchVelocity(double d) {
+    double g = -9.8; 
+    double heightDiff = -1.2954; //shooter height-minus hub height (should be negative) 
+    double shooterWheelRadius = 0.1016;
+    
+    d = Math.max(d, 1.0); // avoid NaN when closer than ~0.89 m
+    double denom = 2 * Math.cos(operatorConstants.launchAngle) * Math.cos(operatorConstants.launchAngle)
+                * (d * Math.tan(operatorConstants.launchAngle) + heightDiff);
+    return Math.sqrt(g * d * d / denom);
+  }
+  // Horizontal speed is constant, so time = distance / horizontal speed
+  private double timeOfFlight(double d) {
+    return operatorConstants.kTOFScale * d / (launchVelocity(d) * Math.cos(operatorConstants.launchAngle));
+}
+  private double rpsFor(double d) {
+  return operatorConstants.kShooterBoost * (launchVelocity(d) * 2) / (Math.PI * operatorConstants.shooterWheelRadius);
+}
   public double calculateSpeed(){
     var alianceColor = DriverStation.getAlliance();
     //calculate shooting speed and turret position
@@ -95,12 +111,12 @@ public class ShootOnTheMove extends Command {
     double g = -9.8; 
     double launchAngle = 0.9686577; //use radians!!!
     double heightDiff = -1.2954; //shooter height-minus hub height (should be negative) 
-    double shooterWheelRadius = 0.1016;
+    
 
     double distanceToHub = Math.sqrt(Math.pow((hubX-x),2)+Math.pow((hubY-y),2));
     double launchVelocity = Math.sqrt((g*Math.pow(distanceToHub,2))/((2*Math.cos(launchAngle)*Math.cos(launchAngle))*(-heightDiff
     -distanceToHub*Math.tan(launchAngle))));
-    double ShootRPS = operatorConstants.kShooterBoost*(launchVelocity*2)/(Math.PI*shooterWheelRadius);
+    double ShootRPS = operatorConstants.kShooterBoost*(launchVelocity*2)/(Math.PI*operatorConstants.shooterWheelRadius);
 
     SmartDashboard.putNumber("distance to hub", distanceToHub);
 
@@ -114,8 +130,7 @@ public class ShootOnTheMove extends Command {
     Pose2d currentPose = m_drivetrain.getState().Pose;
     double x = currentPose.getX();
     double y = currentPose.getY();
-    double hubX=0;
-    double hubY=0;
+
     Rotation2d heading = currentPose.getRotation();
     double angleToHubNorthRadians = Math.atan2((hubY-y),(hubX-x));
     double adjustedShootAngle = 0;
@@ -145,7 +160,7 @@ public class ShootOnTheMove extends Command {
       adjustedShootAngle=-Math.toRadians(60);
     }
     SmartDashboard.putNumber("adjustedShootAngle", Math.toDegrees(adjustedShootAngle));
-    return (adjustedShootAngle+m_turret.returnOffset())/Math.toRadians(36);
+    return (-adjustedShootAngle+m_turret.returnOffset())/Math.toRadians(36);
     
   }
 
@@ -153,20 +168,48 @@ public class ShootOnTheMove extends Command {
   @Override
   public void execute() {
     
-    //turret gear ratio 1:10. 36 degrees per rotation
-    m_turret.goToLocation(calculateTurretRotations());
+    var state = m_drivetrain.getState();
+    Pose2d pose = state.Pose;
+    ChassisSpeeds v = ChassisSpeeds.fromRobotRelativeSpeeds(state.Speeds, pose.getRotation());
+    Translation2d robotVel = new Translation2d(v.vxMetersPerSecond, v.vyMetersPerSecond);
 
-    m_shooter.setShooterSpeed(calculateSpeed()); //uses rps
-    m_kicker.setKickerSpeed(operatorConstants.kKickerSpeed);
-    m_hopper.setHopperSpeed(operatorConstants.kHopperSpeed);
-  }
+    // Where the robot will be when the shot actually happens
+    Translation2d robot = pose.getTranslation().plus(robotVel.times(operatorConstants.kLatency));
+    Translation2d hub = new Translation2d(hubX, hubY);
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    m_shooter.stopShooter();
-    m_kicker.stopKicker();
-    m_hopper.stopHopper();
+    // Virtual target: offset the hub by robot velocity x flight time
+    Translation2d target = hub;
+    for (int i = 0; i < 3; i++) {
+      double tof = timeOfFlight(target.minus(robot).getNorm());
+      target = hub.minus(robotVel.times(tof));
+    }
+    double d = target.minus(robot).getNorm();
+
+    // Turret: same convention as your old Shoot (zero faces rear)
+    double angle = Math.atan2(target.getY() - robot.getY(), target.getX() - robot.getX())
+                - pose.getRotation().getRadians() + Math.PI;
+    angle = MathUtil.angleModulus(angle);
+    boolean inRange = Math.abs(angle) <= Math.toRadians(60);
+    angle = MathUtil.clamp(angle, -Math.toRadians(60), Math.toRadians(60));
+    m_turret.goToLocation((-angle + m_turret.returnOffset()) / Math.toRadians(36));
+
+    m_shooter.setShooterSpeed(rpsFor(d));
+
+    if (inRange /* && m_shooter.atSpeed() && m_turret.atTarget() */) {
+      m_kicker.setKickerSpeed(-0.9);
+      m_hopper.setHopperSpeed(operatorConstants.kHopperSpeed);
+    } else {
+      m_kicker.stopKicker();
+      m_hopper.stopHopper();
+    }
+      }
+
+      // Called once the command ends or is interrupted.
+      @Override
+      public void end(boolean interrupted) {
+        m_shooter.stopShooter();
+        m_kicker.stopKicker();
+        m_hopper.stopHopper();
   }
 
   // Returns true when the command should end.

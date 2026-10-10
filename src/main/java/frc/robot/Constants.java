@@ -7,6 +7,11 @@ public class Constants {
         public static final int kShooterFollowerId=15;
         public static final double kShooterSpeed=40; //in rps
         public static final double kShooterBoost = 1.15;
+        public static final double launchAngle= 0.9686577; //use radians!!!
+        public static final double kLatency = 0.10;           // tune on field
+        public static final double kTOFScale = 1.0;          // tune on field
+        public static final double shooterWheelRadius = 0.1016; //in meters
+
 
         //constants below are copied from ctre website
         public static final double kShooterS=0.25;
@@ -43,7 +48,7 @@ public class Constants {
 
          //kicker varialbes
          public static final int kKickerMotorId=22;
-         public static final double kKickerSpeed=0.5;
+         public static final double kKickerSpeed=-0.9;
 
     
     }
