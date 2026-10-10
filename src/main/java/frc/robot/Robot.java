@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
        
         //use tag filtering to decide whether to use mt1 or mt2
 
-        LimelightHelpers.SetRobotOrientation("limelight", headingDeg, omegaRps, 0, 0, 0, 0);
+        LimelightHelpers.SetRobotOrientation("limelight", headingDeg, omegaRps*360, 0, 0, 0, 0); // Changed limelight orientation here. 
         PoseEstimate llMeasurement;
         if (DriverStation.isAutonomous())
         {
