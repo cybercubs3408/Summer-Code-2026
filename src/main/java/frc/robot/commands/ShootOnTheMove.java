@@ -63,6 +63,7 @@ public class ShootOnTheMove extends Command {
 
     m_hopper = hopper;
     addRequirements(hopper);
+    this.time = time;
     
 
   }
@@ -73,7 +74,7 @@ public class ShootOnTheMove extends Command {
     m_timer.reset();
     m_timer.start();
 
-    if (DriverStation.Alliance.Red == DriverStation.getAlliance().get()){
+    if (DriverStation.Alliance.Red == DriverStation.getAlliance().orElse(Alliance.Blue)){
         hubX = 11.901424;
         hubY = 4.021328;
     }
@@ -84,7 +85,7 @@ public class ShootOnTheMove extends Command {
  
   }
   private double launchVelocity(double d) {
-    double g = -9.8; 
+    double g = 9.8; 
     double heightDiff = -1.2954; //shooter height-minus hub height (should be negative) 
     double shooterWheelRadius = 0.1016;
     
@@ -93,76 +94,15 @@ public class ShootOnTheMove extends Command {
                 * (d * Math.tan(operatorConstants.launchAngle) + heightDiff);
     return Math.sqrt(g * d * d / denom);
   }
+  
   // Horizontal speed is constant, so time = distance / horizontal speed
   private double timeOfFlight(double d) {
     return operatorConstants.kTOFScale * d / (launchVelocity(d) * Math.cos(operatorConstants.launchAngle));
 }
+
   private double rpsFor(double d) {
   return operatorConstants.kShooterBoost * (launchVelocity(d) * 2) / (Math.PI * operatorConstants.shooterWheelRadius);
 }
-  public double calculateSpeed(){
-    var alianceColor = DriverStation.getAlliance();
-    //calculate shooting speed and turret position
-    Pose2d currentPose = m_drivetrain.getState().Pose;
-
-    double x = currentPose.getX();
-    double y = currentPose.getY();
-    
-    double g = -9.8; 
-    double launchAngle = 0.9686577; //use radians!!!
-    double heightDiff = -1.2954; //shooter height-minus hub height (should be negative) 
-    
-
-    double distanceToHub = Math.sqrt(Math.pow((hubX-x),2)+Math.pow((hubY-y),2));
-    double launchVelocity = Math.sqrt((g*Math.pow(distanceToHub,2))/((2*Math.cos(launchAngle)*Math.cos(launchAngle))*(-heightDiff
-    -distanceToHub*Math.tan(launchAngle))));
-    double ShootRPS = operatorConstants.kShooterBoost*(launchVelocity*2)/(Math.PI*operatorConstants.shooterWheelRadius);
-
-    SmartDashboard.putNumber("distance to hub", distanceToHub);
-
-
-    SmartDashboard.putNumber("launch rps", ShootRPS);
-
-    return ShootRPS;
-  }
-
-  public double calculateTurretRotations(){
-    Pose2d currentPose = m_drivetrain.getState().Pose;
-    double x = currentPose.getX();
-    double y = currentPose.getY();
-
-    Rotation2d heading = currentPose.getRotation();
-    double angleToHubNorthRadians = Math.atan2((hubY-y),(hubX-x));
-    double adjustedShootAngle = 0;
-
-    var alianceColor = DriverStation.getAlliance();
-    if (alianceColor.isPresent()){
-        if (DriverStation.Alliance.Red == DriverStation.getAlliance().get()){
-          adjustedShootAngle = angleToHubNorthRadians-heading.getRadians()+Math.PI;
-    }
-        else {
-          adjustedShootAngle = angleToHubNorthRadians-heading.getRadians()+Math.PI;
-        }
-    }
-    while (adjustedShootAngle<-Math.PI) {
-      adjustedShootAngle+=(2*Math.PI);
-    }
-    while (adjustedShootAngle>Math.PI) {
-      adjustedShootAngle-=(2*Math.PI);
-    }
-     
-    SmartDashboard.putNumber("angle to hub", Math.toDegrees(angleToHubNorthRadians));
-
-    if (adjustedShootAngle > Math.toRadians(60)){
-      adjustedShootAngle=Math.toRadians(60);
-    }
-    else if (adjustedShootAngle<-Math.toRadians(60)){
-      adjustedShootAngle=-Math.toRadians(60);
-    }
-    SmartDashboard.putNumber("adjustedShootAngle", Math.toDegrees(adjustedShootAngle));
-    return (-adjustedShootAngle+m_turret.returnOffset())/Math.toRadians(36);
-    
-  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -192,16 +132,21 @@ public class ShootOnTheMove extends Command {
     boolean inRange = Math.abs(angle) <= Math.toRadians(60);
     angle = MathUtil.clamp(angle, -Math.toRadians(60), Math.toRadians(60));
     m_turret.goToLocation((-angle + m_turret.returnOffset()) / Math.toRadians(36));
+    double rps = rpsFor(d);
+    if (!Double.isFinite(d) || !Double.isFinite(angle) || !Double.isFinite(rps)) {
+      m_kicker.stopKicker(); m_hopper.stopHopper(); return;
+      }
 
     m_shooter.setShooterSpeed(rpsFor(d));
-
-    if (inRange /* && m_shooter.atSpeed() && m_turret.atTarget() */) {
-      m_kicker.setKickerSpeed(-0.9);
+    m_kicker.setKickerSpeed(operatorConstants.kKickerSpeed);
+    m_hopper.setHopperSpeed(operatorConstants.kHopperSpeed);
+    /*if (inRange  && m_shooter.atSpeed() && m_turret.atTarget() ) {
+      m_kicker.setKickerSpeed(operatorConstants.kKickerSpeed);
       m_hopper.setHopperSpeed(operatorConstants.kHopperSpeed);
     } else {
       m_kicker.stopKicker();
       m_hopper.stopHopper();
-    }
+    }*/
       }
 
       // Called once the command ends or is interrupted.
