@@ -42,6 +42,8 @@ public class ShootOnTheMove extends Command {
   private double hubX;
   private double hubY;
   private double time;
+
+  
   //private final RunIntakeHopper m_subsystem;
 
   /**
@@ -64,6 +66,8 @@ public class ShootOnTheMove extends Command {
     m_hopper = hopper;
     addRequirements(hopper);
     this.time = time;
+    SmartDashboard.putNumber("kLatency", 0.12);
+    SmartDashboard.putNumber("kTOFScale", 1.1);
     
 
   }
@@ -96,8 +100,8 @@ public class ShootOnTheMove extends Command {
   }
   
   // Horizontal speed is constant, so time = distance / horizontal speed
-  private double timeOfFlight(double d) {
-    return operatorConstants.kTOFScale * d / (launchVelocity(d) * Math.cos(operatorConstants.launchAngle));
+  private double timeOfFlight(double d, double tofScale) {
+    return tofScale * d / (launchVelocity(d) * Math.cos(operatorConstants.launchAngle));
 }
 
   private double rpsFor(double d) {
@@ -107,6 +111,8 @@ public class ShootOnTheMove extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double latency = SmartDashboard.getNumber("kLatency", 0.12);
+    double tofScale = SmartDashboard.getNumber("kTOFScale", 1.1);
     
     var state = m_drivetrain.getState();
     Pose2d pose = state.Pose;
@@ -114,13 +120,13 @@ public class ShootOnTheMove extends Command {
     Translation2d robotVel = new Translation2d(v.vxMetersPerSecond, v.vyMetersPerSecond);
 
     // Where the robot will be when the shot actually happens
-    Translation2d robot = pose.getTranslation().plus(robotVel.times(operatorConstants.kLatency));
+    Translation2d robot = pose.getTranslation().plus(robotVel.times(latency));
     Translation2d hub = new Translation2d(hubX, hubY);
 
     // Virtual target: offset the hub by robot velocity x flight time
     Translation2d target = hub;
     for (int i = 0; i < 3; i++) {
-      double tof = timeOfFlight(target.minus(robot).getNorm());
+      double tof = timeOfFlight(target.minus(robot).getNorm(), tofScale);
       target = hub.minus(robotVel.times(tof));
     }
     double d = target.minus(robot).getNorm();

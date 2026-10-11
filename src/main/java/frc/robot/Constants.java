@@ -8,8 +8,8 @@ public class Constants {
         public static final double kShooterSpeed=40; //in rps
         public static final double kShooterBoost = 1.15;
         public static final double launchAngle= 0.9686577; //use radians!!!
-        public static final double kLatency = 0.10;           // tune on field
-        public static final double kTOFScale = 1.0;          // tune on field
+        public static final double kLatency = 0.12;           // tune on field
+        public static final double kTOFScale = 1.1;          // tune on field
         public static final double shooterWheelRadius = 0.1016; //in meters
 
 
