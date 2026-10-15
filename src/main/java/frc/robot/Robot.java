@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
             m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
         }
 
-       
+       SmartDashboard.putNumber("currentTurretAngle", m_turret.m_turret.getPosition().getValueAsDouble());
         
 
     }

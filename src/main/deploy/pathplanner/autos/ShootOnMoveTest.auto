@@ -5,9 +5,35 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "HubToRightSide"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "HubToRightSide"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.6
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ShootOnTheMove5Sec"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]
