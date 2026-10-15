@@ -39,9 +39,9 @@ public class IntakeMoverSubsystem extends SubsystemBase
     m_config.idleMode(IdleMode.kBrake);
     m_config.softLimit
             .forwardSoftLimit(17.0)            // Max position threshold
-            .forwardSoftLimitEnabled(true)     // Turn the forward limit on
+            .forwardSoftLimitEnabled(false)     // Turn the forward limit on
             .reverseSoftLimit(0.0)             // Min position threshold
-            .reverseSoftLimitEnabled(true);
+            .reverseSoftLimitEnabled(false);
     m_IntakeMoverMotor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
