@@ -12,6 +12,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Constants.operatorConstants;
 
@@ -43,6 +44,7 @@ public class TurretSubsystem extends SubsystemBase
     motionMagicConfigs.MotionMagicCruiseVelocity = 20; // Target cruise velocity of 80 rps
     motionMagicConfigs.MotionMagicAcceleration = 40; // Target acceleration of 160 rps/s (0.5 seconds)
     motionMagicConfigs.MotionMagicJerk = 400; // Target jerk of 1600 rps/s/s (0.1 seconds)
+    talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     m_turret.getConfigurator().apply(talonFXConfigs);
     m_turret.setPosition(0); //resets zero position of turret at startup

@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        m_turret.m_turret.setPosition(0);
+        
     }
 
     @Override
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         LimelightHelpers.SetIMUMode("limelight", 1);
-        m_turret.m_turret.setPosition(0);
+        
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        m_turret.m_turret.setPosition(0);
+        
         HttpCamera limelightFeed = new HttpCamera("Limelight Stream", "http://limelight.local:5800/stream.mjpg");
         
         CameraServer.startAutomaticCapture(limelightFeed);
