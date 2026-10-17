@@ -37,6 +37,7 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootOnTheMove;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.DeployIntake;
+import frc.robot.commands.RetractIntake;
 
 
 //import frc.robot.subsystems.ShooterSubsystem;
@@ -95,6 +96,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("RunHopper3Sec", new RunIntakeHopper(m_HopperSubsystem, m_IntakeSubsystem));
         NamedCommands.registerCommand("RunIntake4Sec", m_IntakeSubsystem.runIntake().withTimeout(4));
         NamedCommands.registerCommand("deployIntake", new DeployIntake(m_IntakeMoverSubsystem));
+        NamedCommands.registerCommand("RetractIntake", new RetractIntake(m_IntakeMoverSubsystem));
 
         //DRIVETRAIN KEYBINDS
         // Note that X is defined as forward according to WPILib convention,

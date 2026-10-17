@@ -1,0 +1,75 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightBumpToShootingPosition"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot3Sec"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightShootingPositionToOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OutpostToShootingPosition"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RetractIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootOnTheMove10Sec"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

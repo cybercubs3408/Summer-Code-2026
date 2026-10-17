@@ -39,7 +39,7 @@ public class Constants {
         //intake variables
         public static final int kIntakeMotorId=17;
         //intake motor is inverted. Negative speed=ball goes in
-        public static final double kIntakeSpeed=-0.8;
+        public static final double kIntakeSpeed=-0.9;
 
         //intake mover varialbes
          public static final int kIntakeMoverMotorId=18;

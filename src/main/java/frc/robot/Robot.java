@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
         }
 
        SmartDashboard.putNumber("currentTurretAngle", m_turret.m_turret.getPosition().getValueAsDouble());
+       SmartDashboard.putNumber("currentTurretOffset", m_turret.returnOffset());
         
 
     }
