@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -57,50 +59,10 @@ public class TurretSubsystem extends SubsystemBase
   {
     m_turret.set(speed);
   }
-  public Command offsetLeft()
-  {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return this.startEnd(
-      ()->{
-        offset-=0.3;
-      },
-      () -> {
-        
-      }
-
-    );
-  }
-
-  public Command offsetRight()
-  {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return this.startEnd(
-      ()->{
-        offset+=0.3;
-      },
-      () -> {
-        
-      }
-
-    );
-  }
-
-  public Command offsetZero()
-  {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return this.startEnd(
-      ()->{
-        offset=0;
-      },
-      () -> {
-        
-      }
-
-    );
-  }
+  private static final double OFFSET_STEP = Math.toRadians(5);
+  public Command offsetLeft()  { return Commands.runOnce(() -> offset -= OFFSET_STEP); }
+  public Command offsetRight() { return Commands.runOnce(() -> offset += OFFSET_STEP); }
+  public Command offsetZero()  { return Commands.runOnce(() -> offset = 0); }
 
   public double returnOffset(){
     return offset;
@@ -170,6 +132,7 @@ public class TurretSubsystem extends SubsystemBase
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("currentTurretOffset", returnOffset());
   }
 
   @Override
