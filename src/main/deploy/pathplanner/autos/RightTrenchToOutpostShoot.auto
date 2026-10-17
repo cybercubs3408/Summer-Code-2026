@@ -50,7 +50,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot3Sec"
+            "name": "ShootOnTheMove10Sec"
           }
         }
       ]

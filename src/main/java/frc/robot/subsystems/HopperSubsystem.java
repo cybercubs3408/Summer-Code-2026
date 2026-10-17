@@ -26,6 +26,7 @@ public class HopperSubsystem extends SubsystemBase
     private final SparkMax m_HopperMotor;
   /** Creates a new ExampleSubsystem. */
 
+  
   // setup hopper subsystem
   public HopperSubsystem()
    {
@@ -36,6 +37,7 @@ public class HopperSubsystem extends SubsystemBase
 
   }
   public void setHopperSpeed(double speed)
+
   {
     m_HopperMotor.set(speed);
   }
