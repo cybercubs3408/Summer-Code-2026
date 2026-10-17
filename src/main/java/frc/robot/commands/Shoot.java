@@ -107,7 +107,7 @@ public class Shoot extends Command {
 
     SmartDashboard.putNumber("launch rps", ShootRPS);
     
-    
+
 
     m_shooter.setShooterSpeed(ShootRPS); //uses rps
     m_kicker.setKickerSpeed(-0.9);
