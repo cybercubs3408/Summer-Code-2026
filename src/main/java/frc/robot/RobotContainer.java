@@ -146,6 +146,7 @@ public class RobotContainer {
         driverController0.rightTrigger().whileTrue(new ShootOnTheMove(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem, 0));
         driverController0.povLeft().onTrue(m_TurretSubsystem.offsetLeft());
         driverController0.povRight().onTrue(m_TurretSubsystem.offsetRight());
+        driverController0.povUp().onTrue(m_TurretSubsystem.offsetZero());
         
 
         //CONTROLLER 1
@@ -158,9 +159,12 @@ public class RobotContainer {
 
         driverController1.rightBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(0.3));
         driverController1.leftBumper().whileTrue(m_IntakeMoverSubsystem.intakeMoverSpeed(-0.3));
+        
         driverController1.rightTrigger().whileTrue(new ShootOnTheMove(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem, 0));
         driverController1.povLeft().onTrue(m_TurretSubsystem.offsetLeft());
         driverController1.povRight().onTrue(m_TurretSubsystem.offsetRight());
+        driverController1.povUp().onTrue(m_TurretSubsystem.offsetZero());
+
 
         
     }

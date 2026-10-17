@@ -87,9 +87,26 @@ public class TurretSubsystem extends SubsystemBase
     );
   }
 
+  public Command offsetZero()
+  {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return this.startEnd(
+      ()->{
+        offset=0;
+      },
+      () -> {
+        
+      }
+
+    );
+  }
+
   public double returnOffset(){
     return offset;
   }
+
+  
 
   public void stopTurret()
   {
