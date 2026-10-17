@@ -88,8 +88,10 @@ public class RobotContainer {
     private void configureBindings() {
         //named commands for pathplanner:
         NamedCommands.registerCommand("Shoot3Sec", new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem, 3));
+        NamedCommands.registerCommand("Shoot5Sec", new Shoot(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem, 5));
         NamedCommands.registerCommand("ShootOnTheMove3Sec", new ShootOnTheMove(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem, 3));
         NamedCommands.registerCommand("ShootOnTheMove5Sec", new ShootOnTheMove(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem, 5));
+         NamedCommands.registerCommand("ShootOnTheMove10Sec", new ShootOnTheMove(m_ShooterSubsystem, m_TurretSubsystem, drivetrain, m_KickerSubsystem, m_HopperSubsystem, 10));
         NamedCommands.registerCommand("RunHopper3Sec", new RunIntakeHopper(m_HopperSubsystem, m_IntakeSubsystem));
         NamedCommands.registerCommand("RunIntake4Sec", m_IntakeSubsystem.runIntake().withTimeout(4));
         NamedCommands.registerCommand("deployIntake", new DeployIntake(m_IntakeMoverSubsystem));

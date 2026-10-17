@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftBumpToShootingPosition"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftBumpToShootingPosition"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
+                }
+              }
+            ]
           }
         },
         {
@@ -23,15 +36,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "RunIntake4Sec"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftToRightNeutral"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "RunIntake4Sec"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftToRightNeutral"
+                }
+              }
+            ]
           }
         },
         {
@@ -43,7 +63,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot3Sec"
+            "name": "Shoot5Sec"
           }
         }
       ]

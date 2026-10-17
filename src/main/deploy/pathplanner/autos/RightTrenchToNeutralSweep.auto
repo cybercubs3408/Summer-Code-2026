@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "RightTrenchToShootingPosition"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightTrenchToShootingPosition"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
+                }
+              }
+            ]
           }
         },
         {
@@ -23,7 +36,7 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -50,7 +63,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot3Sec"
+            "name": "Shoot5Sec"
           }
         }
       ]
