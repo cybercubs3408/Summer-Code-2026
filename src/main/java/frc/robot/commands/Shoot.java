@@ -87,8 +87,8 @@ public class Shoot extends Command {
     }
     
     double g = -9.8; 
-    double launchAngle = 0.9686577; //use radians!!!
-    double heightDiff = -1.2954; //shooter height-minus hub height (should be negative) 
+    double launchAngle = 1.27409; //use radians!!!
+    double heightDiff = -1.2712; //shooter height-minus hub height (should be negative) 
     double shooterWheelRadius = 0.1016;
 
     
@@ -103,8 +103,6 @@ public class Shoot extends Command {
     //ShootAngle = 0; 
     SmartDashboard.putNumber("distance to hub", distanceToHub);
 
-
-    
 
 
     SmartDashboard.putNumber("launch rps", ShootRPS);
