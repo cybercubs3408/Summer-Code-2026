@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -12,12 +18,6 @@
                 "type": "path",
                 "data": {
                   "pathName": "LeftUnderTrenchToNeutral"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "deployIntake"
                 }
               }
             ]
