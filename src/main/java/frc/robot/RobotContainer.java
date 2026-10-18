@@ -147,7 +147,6 @@ public class RobotContainer {
         driverController0.povLeft().onTrue(m_TurretSubsystem.offsetLeft());
         driverController0.povRight().onTrue(m_TurretSubsystem.offsetRight());
         driverController0.povUp().onTrue(m_TurretSubsystem.offsetZero());
-        
 
         //CONTROLLER 1
         

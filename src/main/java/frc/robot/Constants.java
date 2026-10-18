@@ -6,7 +6,7 @@ public class Constants {
         public static final int kShooterLeaderId=14;
         public static final int kShooterFollowerId=15;
         public static final double kShooterSpeed=40; //in rps
-        public static final double kShooterBoost = 0.97;
+        public static final double kShooterBoost = 1;
         public static final double launchAngle= 1.27409; //use radians!!!
         public static final double kLatency = 0.12;           // tune on field
         public static final double kTOFScale = 1.1;          // tune on field
